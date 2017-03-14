@@ -55,12 +55,12 @@ fixture('Getting Started')
   .page('https://github.com');
 
 test('Find "testcafe-example" repo on GitHub', async (t) => {
+  const repo = Selector('.repo-list > li > div');
   // search github
   await t
     .typeText('form[action="/search"]', 'testcafe-example user:mjhea0')
     .pressKey('enter');
   // check li for results
-  const repo = await Selector('.repo-list > li > div');
   await t
     .expect(repo.innerText).contains('mjhea0/testcafe-example');
 });
@@ -87,13 +87,73 @@ Getting Started
 
 Make sense? No? Continue to run the test and review the above steps until it does. Make sure you understand what's happening before moving on.
 
+Let's test our app...
+
 ## Tests
 
-Let's test each of our app's CRUD functions...
+Add a new file called *jobs.js* to the "tests" folder:
+
+```javascript
+import { Selector } from 'testcafe';
+
+fixture('Node Jobs')
+  .page('http://localhost:3000');
+
+test('All Jobs', async (t) => {
+
+});
+```
+
+Then update the `test` command in *package.json*:
+
+```json
+"test": "node_modules/testcafe/bin/testcafe.js chrome tests/jobs.js --app 'npm start'"
+```
+
+`tests/jobs.js` ignores *index.js* so that we can focus just on the tests added to *jobs.js*. The `--app` [option](https://devexpress.github.io/testcafe/documentation/using-testcafe/command-line-interface.html#-a-command---app-command) is used to launch the app.
+
+Try it. You should see the page load in Chrome. With that, let's test each of our app's CRUD functions.
 
 ### GET ALL Jobs
 
+Update *jobs.js*:
+
+```javascript
+import { Selector } from 'testcafe';
+
+fixture('Node Jobs')
+  .page('http://localhost:3000');
+
+test('All Jobs', async (t) => {
+  const title = Selector('h1');
+  const tableRows = Selector('tbody > tr');
+  const addJobButton = Selector('a.btn.btn-primary');
+  const firstJob = Selector('tbody > tr').withText('Horse Whisperer')
+  // check title, add job button, table rows, and job exists
+  await t
+    .expect(title.innerText).contains('All Jobs')
+    .expect(addJobButton.innerText).contains('Add New Job')
+    .expect(tableRows.count).eql(3)
+    .expect(firstJob.exists).ok();
+});
+```
+
+What's happening? Turn to the [docs](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/) to figure this out, adding comments as necessary.
+
+Run:
+
+```sh
+Node Jobs
+✓ All Jobs
 
 
+1 passed (0s)
+```
+
+### Add Job
+
+## Update Job
+
+### Delete Job
 
 ## CI
