@@ -23,9 +23,9 @@ Start by cloning the base project structure:
 $ git clone https://github.com/mjhea0/testcafe-example --branch v1 --single-branch -b master
 ```
 
-Install the dependencies, and then fire up the app by running `npm start` to make sure all is well. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser and you should see a list of jobs in HTML.
+Install the dependencies, and then fire up the app by running `npm start` to make sure all is well. Navigate to [http://localhost:3000/](http://localhost:3000/) in your browser and you should see a list of jobs in HTML. Experiment with the app. Add a job. Update a job. Delete a job. This is what we will be testing. Kill the server when done.
 
-Kill the server, and then install TestCafe:
+Install TestCafe:
 
 ```sh
 $ npm install testcafe@0.13.0 --save-dev
@@ -128,17 +128,17 @@ test('All Jobs', async (t) => {
   const title = Selector('h1');
   const tableRows = Selector('tbody > tr');
   const addJobButton = Selector('a.btn.btn-primary');
-  const firstJob = Selector('tbody > tr').withText('Horse Whisperer')
+  const firstJob = Selector('tbody > tr').withText('Horse Whisperer');
   // check title, add job button, table rows, and job exists
   await t
-    .expect(title.innerText).contains('All Jobs')
-    .expect(addJobButton.innerText).contains('Add New Job')
+    .expect(title.innerText).eql('All Jobs')
+    .expect(addJobButton.innerText).eql('Add New Job')
     .expect(tableRows.count).eql(3)
     .expect(firstJob.exists).ok();
 });
 ```
 
-What's happening? Turn to the [docs](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/) to figure this out, adding comments as necessary.
+What's happening? Turn to the [docs](https://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/) to figure this out on your own, adding comments as necessary.
 
 Run:
 
@@ -150,10 +150,206 @@ Node Jobs
 1 passed (0s)
 ```
 
+Before moving on, refactor out the selectors so that they can be re-used by other test cases:
+
+```javascript
+import { Selector } from 'testcafe';
+
+// selectors
+const title = Selector('h1');
+const tableRows = Selector('tbody > tr');
+const addJobButton = Selector('a.btn.btn-primary');
+const firstJob = Selector('tbody > tr').withText('Horse Whisperer');
+
+fixture('Node Jobs')
+  .page('http://localhost:3000');
+
+test('All Jobs', async (t) => {
+  // check title, add job button, table rows, and job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(addJobButton.innerText).eql('Add New Job')
+    .expect(tableRows.count).eql(3)
+    .expect(firstJob.exists).ok();
+});
+```
+
 ### Add Job
 
-## Update Job
+Start by adding a new `test()` function to *jobs.js*:
+
+```javascript
+test.only('New Job', async (t) => {
+
+});
+```
+
+> **NOTE:** Can you guess what `only()` does? Try running the tests to see. Please review the [docs](https://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#skipping-tests) for more info.
+
+Think about the steps an end user has to go through to add a job:
+
+1. Click the add job button
+1. Fill out the form
+1. Submit the form
+
+Now, try this on your own, step by step, before looking at the solution...
+
+```javascript
+test.only('New Job', async (t) => {
+  // click add job button
+  await t
+    .click(addJobButton)
+    .expect(title.innerText).eql('Add Job');
+  // fill out form
+  await t
+    .typeText('input[name="title"]', 'Python Developer')
+    .typeText('textarea[name="description"]', 'Write some Python')
+    .typeText('input[name="company"]', 'Real Python')
+    .typeText('input[name="email"]', 'michael@realpython.com')
+    .click(submitButton)
+  // check title, table rows, and new job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(tableRows.count).eql(4)
+    .expect(Selector('tbody > tr').withText('Python Developer').exists).ok();
+});
+```
+
+Make sure to add the selector to the top:
+
+```javascript
+const submitButton = Selector('button[type="submit"]');
+```
+
+Test it out. Then remove the `only()` and test again:
+
+```sh
+Node Jobs
+✓ All Jobs
+✓ New Job
+
+
+2 passed (4s)
+```
+
+What are we missing in this test?
+
+1. What happens if the cancel button is pressed?
+1. What if the end user does not enter data for all the fields?
+1. What if text is entered in the email field but it is not a valid email?
+
+Try testing for these on your own.
+
+### Update Job
+
+Again, start by adding the boilerplate:
+
+```javascript
+test('Update Job', async (t) => {
+
+});
+```
+
+Then write out the steps the end user has to take before writing any code:
+
+1. Click the update button
+1. Fill out the form
+1. Submit the form
+
+```javascript
+test('Update Job', async (t) => {
+  // click update button
+  await t
+    .click(firstJob.find('a.btn.btn-warning'))
+    .expect(title.innerText).eql('Update Job');
+  // fill out form
+  await t
+    .typeText('input[name="title"]', 'testing an update', {replace: true})
+    .typeText('textarea[name="description"]', 'test', {replace: true})
+    .typeText('input[name="company"]', 'test', {replace: true})
+    .typeText('input[name="email"]', 't@t.com', {replace: true})
+    .click(submitButton)
+  // check title, table rows, and updated job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(tableRows.count).eql(4) // why 4?
+    .expect(firstJob.exists).notOk()
+    .expect(Selector('tbody > tr').withText('testing an update').exists).ok();
+});
+```
+
+Test:
+
+```sh
+Node Jobs
+✓ All Jobs
+✓ New Job
+✓ Update Job
+
+
+3 passed (8s)
+```
+
+What else should you test for? Write the test cases on your own. Also, did you notice the code smell? There's a lot of code duplication between those last two test cases. How could this be better handled? Finally, did you notice that there are still four jobs in the table? Could there be issues with testing the previous two tests together rather than in isolation?
 
 ### Delete Job
+
+Run the app again with `npm start` to review, from the end user's perspective, what happens when you try to delete a job.
+
+```javascript
+test('Delete Job', async (t) => {
+  // click delete button
+  await t
+    .setNativeDialogHandler(() => true)
+    .click(clayDryerJob.find('a.btn.btn-danger'))
+  // check title, table rows, and updated job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(tableRows.count).eql(3) // why 3?
+    .expect(clayDryerJob.exists).notOk();
+});
+```
+
+Did you notice the `setNativeDialogHandler()` function? [This](https://devexpress.github.io/testcafe/documentation/test-api/handling-native-dialogs.html#dialog-handler) tells TestCafe how to handle the alert.
+
+What if we click "cancel" instead of "ok"?
+
+
+```javascript
+test('Delete Job', async (t) => {
+  // click delete button
+  await t
+    .setNativeDialogHandler(() => true) // => press ok
+    .click(clayDryerJob.find('a.btn.btn-danger'))
+  // check title, table rows, and updated job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(tableRows.count).eql(3) // why 3?
+    .expect(clayDryerJob.exists).notOk();
+    // click delete button
+  await t
+    .setNativeDialogHandler(() => false) // => press cancel
+    .click(tableRows.find('a.btn.btn-danger'))
+  // check title, table rows, and updated job exists
+  await t
+    .expect(title.innerText).eql('All Jobs')
+    .expect(tableRows.count).eql(3) // why 3?
+});
+```
+
+Run the tests:
+
+```sh
+Node Jobs
+✓ All Jobs
+✓ New Job
+✓ Update Job
+✓ Delete Job
+
+
+4 passed (9s)
+```
+
+Again, handle any edge cases and clean up the code smell.
 
 ## CI
