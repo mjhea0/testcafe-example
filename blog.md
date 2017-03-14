@@ -1,8 +1,8 @@
 # Functional Testing with TestCafe
 
-https://medium.com/@adrian_lewis/top-5-most-rated-node-js-frameworks-for-end-to-end-web-testing-f8ebca4e5d44#.e0bwyabed
+Today we are going to dive into the world of functional web testing with [TestCafe](https://devexpress.github.io/testcafe/).
 
-ADD INTRO
+Unlike the majority of other tools, TestCafe is not dependent on Selenium or WebDriver. It works on any modern browser that supports HTML5 without any plugins. Further, it supports all major operating systems and can run simultaneously on multiple browsers and machines.
 
 > **NOTE:** This tutorial uses TestCafe version [0.13.0](https://github.com/DevExpress/testcafe/releases/tag/v0.13.0).
 
@@ -70,12 +70,12 @@ What's happening?
 
 1. Since *all* tests are organized into [fictures](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#fixtures), we started with a `fixture()` function.
 1. From there we specified the start URL - `http://devexpress.github.io/testcafe/example` - via the `page()` [method](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#specifying-the-start-webpage).
-1. Next, we added the test code into a `test()` [function](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests), which takes an async function along with the [test controller object](http://devexpress.github.io/testcafe/documentation/test-api/actions/)
+1. Next, we added the test code into a `test()` [function](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests), which takes an async function along with the [test controller](http://devexpress.github.io/testcafe/documentation/test-api/actions/) object.
 1. `await` is then used to wait for certain [actions](http://devexpress.github.io/testcafe/documentation/test-api/actions/) to complete. In this case, we used `typeText()` and `pressKey()` to search GitHub.
 1. On the GitHub search results page, we used a `Selector()` [function](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) to parse the DOM.
 1. Finally, we asserted that the actual results contain the expected results.  
 
-Try this out! Run `npm test`. If all goes well Chrome should fire up and start executing the test, and you should see something like this in your terminal:
+Try this out! Run `npm test`. If all goes well Chrome should fire up and execute the test. Once done, you should see something like this in your terminal:
 
 ```sh
 Running tests in:
@@ -85,10 +85,15 @@ Getting Started
 ✓ Find "testcafe-example" repo on GitHub
 ```
 
-Once finished, review the steps again. Make sure you understand what's happening before moving on.
-
-Let's add some tests to our app...
+Make sense? No? Continue to run the test and review the above steps until it does. Make sure you understand what's happening before moving on.
 
 ## Tests
+
+Let's test each of our app's CRUD functions...
+
+### GET ALL Jobs
+
+
+
 
 ## CI
