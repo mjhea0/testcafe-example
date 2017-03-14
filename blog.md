@@ -8,6 +8,15 @@ Unlike the majority of other tools, TestCafe is not dependent on Selenium or Web
 
 Please review the [Getting Started](http://devexpress.github.io/testcafe/documentation/getting-started/) guide before beginning.
 
+## Contents
+
+1. Objectives
+1. Project Setup
+1. Tests
+1. Headless Browser Setup
+1. CI Setup
+1. Next Steps
+
 ## Objectives
 
 By the end of this tutorial, you should be able to...
@@ -15,7 +24,7 @@ By the end of this tutorial, you should be able to...
 1. foo
 1. bar
 
-## Getting Started
+## Project Setup
 
 Start by cloning the base project structure:
 
@@ -73,7 +82,9 @@ What's happening?
 1. Next, we added the test code into a `test()` [function](http://devexpress.github.io/testcafe/documentation/test-api/test-code-structure.html#tests), which takes an async function along with the [test controller](http://devexpress.github.io/testcafe/documentation/test-api/actions/) object.
 1. `await` is then used to wait for certain [actions](http://devexpress.github.io/testcafe/documentation/test-api/actions/) to complete. In this case, we used `typeText()` and `pressKey()` to search GitHub.
 1. On the GitHub search results page, we used a `Selector()` [function](http://devexpress.github.io/testcafe/documentation/test-api/selecting-page-elements/selectors.html) to parse the DOM.
-1. Finally, we asserted that the actual results contain the expected results.  
+1. Finally, we asserted that the actual results contain the expected results.
+
+> **NOTE:** If you're new to [async/await](https://github.com/tc39/ecmascript-asyncawait), check out [Understanding JavaScript’s async await](https://ponyfoo.com/articles/understanding-javascript-async-await).
 
 Try this out! Run `npm test`. If all goes well Chrome should fire up and execute the test. Once done, you should see something like this in your terminal:
 
@@ -290,7 +301,11 @@ Node Jobs
 3 passed (8s)
 ```
 
-What else should you test for? Write the test cases on your own. Also, did you notice the code smell? There's a lot of code duplication between those last two test cases. How could this be better handled? Finally, did you notice that there are still four jobs in the table? Could there be issues with testing the previous two tests together rather than in isolation?
+What else should you test for? Write the test cases on your own.
+
+Also, did you notice the code smell? There's a lot of code duplication happening between those last two test cases. How could this be better handled?
+
+Finally, did you notice that there are still four jobs in the table? Why? Could there be issues with testing the previous two tests together rather than in isolation? Probably not in this case, but if there are, you could always wrap the update in a new `fixture()`, since this restores the page to its initial state.
 
 ### Delete Job
 
@@ -352,4 +367,8 @@ Node Jobs
 
 Again, handle any edge cases and clean up the code smell.
 
-## CI
+## Headless Browser Setup
+
+## CI Setup
+
+## Next Steps
