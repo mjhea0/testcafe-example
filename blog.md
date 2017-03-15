@@ -9,6 +9,7 @@ We will be using:
 - TestCafe v[0.13.0](https://github.com/DevExpress/testcafe/releases/tag/v0.13.0)
 - Chrome v[57](https://chromereleases.googleblog.com/2017/03/stable-channel-update-for-desktop.html)
 - Firefox v[52](https://www.mozilla.org/en-US/firefox/52.0/releasenotes/)
+- NodeJS v[7.6.0](https://nodejs.org/docs/v7.6.0/api/all.html)
 
 Please review the [Getting Started](http://devexpress.github.io/testcafe/documentation/getting-started/) guide before beginning.
 
@@ -410,8 +411,6 @@ There's also a [plugin](https://github.com/DevExpress/testcafe-browser-provider-
 Finally, let's incorporate TestCafe into our Continuous Integration (CI) process with [Travis CI](https://travis-ci.org/).
 
 > **NOTE:** New to Travis? Review the [Travis CI for Complete Beginners](https://docs.travis-ci.com/user/for-beginners) guide along with [Running Tests in Firefox and Chrome Using Travis CI](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html).
-
-.
 
 After you enable Travis CI for the repository you are working with, add a *.travis.yml* file to the project root:
 
