@@ -4,7 +4,11 @@ Today we are going to dive into the world of functional web testing with [TestCa
 
 Unlike the majority of other tools, TestCafe is not dependent on Selenium or WebDriver. It works on any modern browser that supports HTML5 without any plugins. Further, it supports all major operating systems and can run simultaneously on multiple browsers and machines.
 
-> **NOTE:** This tutorial uses TestCafe version [0.13.0](https://github.com/DevExpress/testcafe/releases/tag/v0.13.0).
+We will be using:
+
+- TestCafe v[0.13.0](https://github.com/DevExpress/testcafe/releases/tag/v0.13.0)
+- Chrome v[57](https://chromereleases.googleblog.com/2017/03/stable-channel-update-for-desktop.html)
+- Firefox v[52](https://www.mozilla.org/en-US/firefox/52.0/releasenotes/)
 
 Please review the [Getting Started](http://devexpress.github.io/testcafe/documentation/getting-started/) guide before beginning.
 
@@ -13,8 +17,8 @@ Please review the [Getting Started](http://devexpress.github.io/testcafe/documen
 1. Objectives
 1. Project Setup
 1. Tests
-1. Headless Browser Setup
-1. CI Setup
+1. Browser Support
+1. Continuous Integration
 1. Next Steps
 
 ## Objectives
@@ -90,7 +94,7 @@ Try this out! Run `npm test`. If all goes well Chrome should fire up and execute
 
 ```sh
 Running tests in:
-- Chrome 56.0.2924 / Mac OS X 10.11.6
+- Chrome 57.0.2987 / Mac OS X 10.11.6
 
 Getting Started
 ✓ Find "testcafe-example" repo on GitHub
@@ -365,10 +369,53 @@ Node Jobs
 4 passed (9s)
 ```
 
-Again, handle any edge cases and clean up the code smell.
+Again, handle any edge cases on you own and clean up the code smell.
 
-## Headless Browser Setup
+## Browser Support
 
-## CI Setup
+Aside for Chrome, TestCafe [supports](https://devexpress.github.io/testcafe/documentation/using-testcafe/common-concepts/browser-support.html#officially-supported-browsers) a number of browsers out-of-the-box. If you don't need to test browser-dependent functionality, then you can use a headless browser.
+
+Start by installing the [plugin](https://github.com/ryx/testcafe-browser-provider-nightmare), which is powered by [Nightmare](https://github.com/segmentio/nightmare):
+
+```sh
+$ npm install testcafe-browser-provider-nightmare@0.0.4 --save-dev
+```
+
+Update the `test` command in *package.json*:
+
+```json
+"test": "node_modules/testcafe/bin/testcafe.js nightmare tests/jobs.js --app 'npm start'"
+```
+
+Run the tests, and you should see:
+
+```sh
+Running tests in:
+- Electron 1.6.2 / Mac OS X 10.11.6
+
+Node Jobs
+✓ All Jobs
+✓ New Job
+✓ Update Job
+✓ Delete Job
+
+
+4 passed (9s)
+```
+
+There's also a [plugin](https://github.com/DevExpress/testcafe-browser-provider-saucelabs) for cross browser support powered by [SauceLabs](https://saucelabs.com/).
+
+## Continuous Integration
+
+Finally, let's incorporate TestCafe into our Continuous Integration (CI) process with [Travis CI](https://travis-ci.org/).
+
+> **NOTE:** New to Travis? Review the [Travis CI for Complete Beginners](https://docs.travis-ci.com/user/for-beginners) guide along with [Running Tests in Firefox and Chrome Using Travis CI](http://devexpress.github.io/testcafe/documentation/recipes/running-tests-in-firefox-and-chrome-using-travis-ci.html).
+
+.
+
+After you enable Travis CI for the repository you are working with, add a *.travis.yml* file to the project root:
+
+
+
 
 ## Next Steps

@@ -13,6 +13,7 @@
     "nunjucks": "^3.0.0"
   },
   "devDependencies": {
-    "testcafe": "^0.13.0"
+    "testcafe": "^0.13.0",
+    "testcafe-browser-provider-nightmare": "0.0.4"
   }
 }
