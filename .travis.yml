@@ -1,6 +1,9 @@
 language: node_js
 node_js: "7"
 
+before_install:
+  - stty cols 80
+
 dist: trusty
 sudo: required
 
