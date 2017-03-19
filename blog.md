@@ -414,7 +414,31 @@ Finally, let's incorporate TestCafe into our Continuous Integration (CI) process
 
 After you enable Travis CI for the repository you are working with, add a *.travis.yml* file to the project root:
 
+```
+language: node_js
+node_js: "7"
 
+before_install:
+  - stty cols 80
 
+dist: trusty
+sudo: required
+
+addons:
+  apt:
+    sources:
+     - google-chrome
+    packages:
+     - google-chrome-stable
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
+```
+
+ADD EXPLANATION
 
 ## Next Steps
+
+ADD NEXT STEPS
