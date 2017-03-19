@@ -1,6 +1,9 @@
 language: node_js
 node_js: "7"
 
+dist: trusty
+sudo: required
+
 addons:
   apt:
     sources:
