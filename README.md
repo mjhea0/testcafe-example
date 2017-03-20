@@ -4,7 +4,8 @@
 
 ## Want to learn how to build this project?
 
-Check out the [blog post](http://mherman.org/blog/2017/03/19/functional-testing-with-testcafe).
+- Check out the [blog post](http://mherman.org/blog/2017/03/19/functional-testing-with-testcafe).
+- [Slides](http://mherman.org/testcafe-example)
 
 ## Want to use this project?
 
