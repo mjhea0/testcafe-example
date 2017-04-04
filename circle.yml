@@ -2,3 +2,5 @@
 machine:
   node:
     version: 7.6.0
+
+test: "node_modules/testcafe/bin/testcafe.js chrome tests/eample.js"
