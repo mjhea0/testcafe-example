@@ -15,21 +15,8 @@ const clayDryerJob = Selector('tbody > tr').withText('Clay Dryer');
 
 describe('mherman.org', () => {
 
-  before(() => {});
-  after(() => {});
-
-  describe('Blobs Resource', () => {
-    it('should list ALL blobs on /blobs GET');
-    it('should list a SINGLE blob on /blob/<id> GET');
-    it('should add a SINGLE blob on /blobs POST');
-    it('should update a SINGLE blob on /blob/<id> PUT');
-    it('should delete a SINGLE blob on /blob/<id> DELETE');
-  });
-
   describe('Jobs Resource', () => {
-
     fixture('Jobs Resource').page('http://localhost:3333');
-
       it('should list ALL jobs on /jobs GET', (done) => {
         test('All Jobs', async (t) => {
           // check title, add job button, table rows, and job exists
